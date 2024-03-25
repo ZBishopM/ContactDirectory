@@ -10,35 +10,31 @@ class counterData {
 }
 const countersData:any[]=reactive(JSON.parse(localStorage.getItem('countersData')!)||[]);
 let id=ref(+(JSON.parse(window.localStorage.getItem('totalId')!)))
-const count=ref(+(JSON.parse(window.localStorage.getItem('countUntilNow')!)));
 
-watch(count,(val)=>{
-  window.localStorage.setItem('countUntilNow',val.toString())
+watch(countersData,(val)=>{
+  let parsed = JSON.stringify(val);
+  window.localStorage.setItem('countersData',parsed)
+},{deep:true})
+
+watch(id,(nv)=>{
+  window.localStorage.setItem('totalId',nv.toString())
 })
 
 function addCounter(){
   const aux= new counterData(0,id.value,false)
   countersData.push(aux);
   id.value++;
-  window.localStorage.setItem('totalId',id.value.toString())
-  saveCounters();
 }
 
 function counting(id:number){
   const selectedCounter=countersData.find(e=>e.id===id)
   selectedCounter.count++;
-  saveCounters();
 }
 
 function removeCounter(x:number){
   countersData.splice(x,1);
-  saveCounters();
 }
 
-function saveCounters(){
-  let parsed = JSON.stringify(countersData);
-  window.localStorage.setItem('countersData',parsed)
-}
 </script>
 
 <template>
