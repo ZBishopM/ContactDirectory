@@ -11,50 +11,32 @@ class counterData {
 const countersData:any[]=reactive(JSON.parse(localStorage.getItem('countersData')!)||[]);
 let id=ref(+(JSON.parse(window.localStorage.getItem('totalId')!)))
 const count=ref(+(JSON.parse(window.localStorage.getItem('countUntilNow')!)));
-let counters=ref(JSON.parse(localStorage.getItem('counters')!));
 
 watch(count,(val)=>{
   window.localStorage.setItem('countUntilNow',val.toString())
 })
+
 function addCounter(){
-  if(!counters.value){
-    counters.value=[];
-  }
   const aux= new counterData(0,id.value,false)
   countersData.push(aux);
-  counters.value.push(id.value);
   id.value++;
-  let parsed = JSON.stringify(countersData);
-  window.localStorage.setItem('countersData',parsed)
   window.localStorage.setItem('totalId',id.value.toString())
   saveCounters();
 }
 
 function counting(id:number){
   const selectedCounter=countersData.find(e=>e.id===id)
-  /*if(!selectedCounter){
-  const aux= new counterData(0,id,false)
-    aux.id=id;
-    aux.count++;
-    countersData.push(counterData);
-    return
-  }*/
   selectedCounter.count++;
-  let parsed = JSON.stringify(countersData);
-  window.localStorage.setItem('countersData',parsed)
+  saveCounters();
 }
 
 function removeCounter(x:number){
-  counters.value.splice(x,1);
   countersData.splice(x,1);
   saveCounters();
 }
 
 function saveCounters(){
-  let parsed = JSON.stringify(counters.value);
-  window.localStorage.setItem('counters',parsed)
-
-  parsed = JSON.stringify(countersData);
+  let parsed = JSON.stringify(countersData);
   window.localStorage.setItem('countersData',parsed)
 }
 </script>
@@ -65,10 +47,10 @@ function saveCounters(){
     <button @click="addCounter" type="button">Add counter </button>
   </div>
   
-  <div v-for="(id,n) in counters" class="card">
+  <div v-for="(n,id) in countersData" class="card">
     <button class="counter">{{ id }}</button>
-    <button type="button" @click="counting(id)">count is {{ countersData[n].count }}</button>
-    <button @click="removeCounter(n)">Remove</button>
+    <button type="button" @click="counting(n.id)">count is {{ n.count }}</button>
+    <button @click="removeCounter(id)">Remove</button>
   </div>
   <p>
     Este es un p
