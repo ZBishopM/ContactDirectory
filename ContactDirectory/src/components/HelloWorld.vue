@@ -8,11 +8,11 @@ class counterData {
   public id: number,
   public contactado:boolean){}
 }
-const countersData:any[]=reactive(JSON.parse(localStorage.getItem('countersData')!));
+const countersData:any[]=reactive(JSON.parse(localStorage.getItem('countersData')!)||[]);
 let id=ref(+(JSON.parse(window.localStorage.getItem('totalId')!)))
 const count=ref(+(JSON.parse(window.localStorage.getItem('countUntilNow')!)));
 let counters=ref(JSON.parse(localStorage.getItem('counters')!));
-console.log(counters)
+
 watch(count,(val)=>{
   window.localStorage.setItem('countUntilNow',val.toString())
 })
@@ -46,12 +46,16 @@ function counting(id:number){
 
 function removeCounter(x:number){
   counters.value.splice(x,1);
+  countersData.splice(x,1);
   saveCounters();
 }
 
 function saveCounters(){
   let parsed = JSON.stringify(counters.value);
   window.localStorage.setItem('counters',parsed)
+
+  parsed = JSON.stringify(countersData);
+  window.localStorage.setItem('countersData',parsed)
 }
 </script>
 
@@ -63,7 +67,7 @@ function saveCounters(){
   
   <div v-for="(id,n) in counters" class="card">
     <button class="counter">{{ id }}</button>
-    <button type="button" @click="counting(id)">count is {{ countersData[id].count }}</button>
+    <button type="button" @click="counting(id)">count is {{ countersData[n].count }}</button>
     <button @click="removeCounter(n)">Remove</button>
   </div>
   <p>
