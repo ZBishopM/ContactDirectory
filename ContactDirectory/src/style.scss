@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Twemoji Country Flags",Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -12,10 +12,26 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+@mixin border-transition($color){
+  transition: border-color 0.25s;
+  &:hover {
+    border-color: $color;
+  }
+}
 @mixin hover-shadow($color){
   &:hover {
     filter: drop-shadow(0 0 2em $color);
   }
+}
+@mixin textbox(){
+
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1em 0.6em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  color-scheme: inherit;
 }
 
 .read-the-docs {
@@ -53,33 +69,40 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 3em;
   line-height: 1.1;
 }
 
-$base-color-button:#1a1a1a;
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  &:hover {
-    border-color: #646cff;
-    background-color: darken($base-color-button,3%);
-  }
-  &:focus-visible,&:focus {
-    outline: 4px auto -webkit-focus-ring-color;
-    outline-color:darken(#646cff,3%) ;
+button:not(.--should-have-bottom-flag) {
+  &.hey{
+    @include textbox;
+    margin:0.5em;
+    cursor: pointer;
+    @include border-transition(#646cff);
+    &:focus-visible,&:focus {
+      outline: 4px auto -webkit-focus-ring-color;
+      outline-color:darken(#646cff,3%) ;
+    }
   }
 }
 
 .card {
-  padding: 2em;
+  padding: 0.5em;
+}
+
+.container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.item{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
 }
 
 #app {
@@ -87,9 +110,53 @@ button {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (prefers-color-scheme: light) {
+form {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+    
+label {
+  font-weight: bold;
+  text-align: left;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+}
+
+input, select,option{
+  @include textbox;
+  @include border-transition(#646cff);
+}
+
+.item-1{
+  flex: 0 0 150px;
+}
+.item-2{
+  flex: 0 0 210px;
+}
+.item-3{
+  flex: 0 0 120px;
+  text-align: center;
+}
+
+.item-4,.item-5{
+  flex: 0 0 40px;
+}
+
+/* .m-phone-number-input{
+  margin:0.5em auto;
+} */
+
+$light-theme: "prefers-color-scheme: light";
+$dark-theme: "prefers-color-scheme: dark";
+$mediaMaxWidth: 1260px;
+$mediaBp1Width: 965px;
+$mediaMinWidth: 480px;
+@media ($light-theme) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -97,7 +164,14 @@ button {
   a:hover {
     color: #747bff;
   }
-  button {
-    background-color: #f9f9f9;
+  button, input, select {
+    &:not(.--should-have-bottom-flag){background-color: #efeded;}
+    
+  }
+}
+@media ($dark-theme)
+{
+  button:not(.--should-have-bottom-flag) {
+    background-color: #1a1a1a;
   }
 }
