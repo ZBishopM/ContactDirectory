@@ -2,7 +2,10 @@
 This is a FrontEnd technical test applying to MGi, a contact directory in Vue 
 
 # How to build in local:
-This project is being made in Vue :D 
+Fork -> npm i -> npm run dev
+
+# About how is being made
+This project is being made in Typescript, SCSS, Vue and Vite, this last one allows us to make easier unit testing and have a nice template for start working in Typescript and Vue :D 
 
 # To-do: (Español)
 
